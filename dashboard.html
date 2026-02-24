@@ -1,0 +1,344 @@
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="iFOCo6Hev8guh4n5ZmT_WvsjVtkGJm2tOL8_xIxVLQo" />
+    <title>MANSAROVAR GLOBAL UNIVERSITY - Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --mgu-red: #d9534f; --mgu-blue: #2c3e50; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); height: 100vh; display: flex; overflow: hidden; }
+
+        /* --- LOGIN PAGE --- */
+        #login-page { height: 100vh; width: 100%; display: flex; justify-content: center; align-items: center; position: fixed; z-index: 1000; background: #fff; top:0; left:0; }
+        .login-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); width: 550px; border: 1px solid #eee; text-align: center; }
+        .login-card img { width: 280px; margin-bottom: 25px; } 
+        .login-flex { display: flex; align-items: center; gap: 20px; justify-content: center; }
+        .input-fields { flex: 1; display: flex; flex-direction: column; gap: 15px; }
+        .input-group { position: relative; }
+        .input-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .input-group i { position: absolute; right: 12px; top: 14px; color: #999; }
+        .login-btn { padding: 10px; background: var(--mgu-red); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; width: 100px; height: 40px; }
+        #err { color: #d9534f; font-size: 13px; font-weight: bold; margin-top: 20px; display: none; background: #f2dede; padding: 10px; border-radius: 4px; border: 1px solid #ebccd1; }
+
+        /* --- SIDEBAR --- */
+        .sidebar { width: 320px; background: var(--mgu-blue); color: white; display: flex; flex-direction: column; }
+        .sidebar-title { padding: 25px 15px; font-size: 14px; font-weight: bold; text-align: center; border-bottom: 1px solid #3e5871; text-transform: uppercase; }
+        .sidebar a, .dropdown-btn { padding: 15px 25px; color: #bdc3c7; text-decoration: none; border-bottom: 1px solid #34495e; cursor: pointer; display: flex; align-items: center; gap: 10px; background: none; border: none; width: 100%; text-align: left; font-size: 14px; }
+        .sidebar a:hover, .dropdown-btn:hover { background: #34495e; color: white; }
+        .dropdown-container { display: none; background-color: #1a252f; }
+        .dropdown-container div { padding: 12px 55px; cursor: pointer; color: #bdc3c7; font-size: 13px; border-bottom: 1px solid #2c3e50; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { flex: 1; display: flex; flex-direction: column; }
+        .top-nav { background: white; padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .profile-corner { display: flex; align-items: center; gap: 15px; }
+        .profile-corner img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--mgu-red); object-fit: cover; }
+        .container { padding: 20px; overflow-y: auto; flex: 1; }
+        .card { background: white; padding: 35px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: 100%; max-width: 950px; margin: 0 auto; }
+        .hidden { display: none; }
+
+        /* --- TABLES & LAYOUT --- */
+        .slip-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 15px; }
+        .slip-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 20px; }
+        .slip-table td, .slip-table th { border: 1px solid #999; padding: 10px; }
+        .label { background: #f0f0f0; font-weight: bold; width: 25%; }
+
+        /* --- ID CARD --- */
+        /* Purana ID Card CSS delete karke ise dalein */
+.id-wrapper {
+    width: 320px;
+    background: #fff;
+    border: 2px solid #800000; 
+    font-family: Arial, sans-serif;
+    padding: 12px;
+    margin: 10px auto;
+}
+.header-box {
+    display: flex; align-items: center;
+    border-bottom: 2px solid #800000;
+    padding-bottom: 8px; margin-bottom: 12px;
+}
+.header-box img { width: 55px; margin-right: 12px; }
+.univ-title { font-size: 13px; font-weight: bold; color: #003366; text-transform: uppercase; text-align: left; }
+
+.box-upper, .box-lower { border: 2.5px solid #800000; padding: 12px; margin-bottom: 12px; }
+.img-placeholder { width: 110px; height: 130px; margin: 0 auto 15px; border: 1px solid #999; overflow: hidden; }
+.img-placeholder img { width: 100%; height: 100%; object-fit: cover; }
+
+.info-line { font-size: 11px; margin-bottom: 6px; font-weight: bold; color: #000; text-align: left; }
+.info-line span { font-weight: normal; color: #333; }
+
+.emergency-btn {
+    border: 2px solid #cc0000; border-radius: 20px;
+    margin-top: 15px; padding: 6px; text-align: center;
+    color: #cc0000; font-weight: bold; font-size: 13px;
+}
+        /* --- STATUS BOX --- */
+        .status-box { padding: 20px; background: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px; text-align: center; }
+        .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; }
+        .btn-action { background: var(--mgu-red); color: white; padding: 12px 35px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div id="login-page">
+<div class="login-card">
+            <img src="https://i.ibb.co/zgH7M0J/logo-wide.png" alt="MGU Wide Logo">
+            <h3>Student Portal Login</h3>
+            <div class="login-flex">
+                <div class="input-fields">
+                    <div class="input-group"><input type="text" id="log-uid" placeholder="Registration ID"><i class="fa fa-user"></i></div>
+                    <div class="input-group"><input type="password" id="log-pass" placeholder="Password"><i class="fa fa-lock"></i></div>
+                    <div class="input-group"><input type="text" id="log-mob" placeholder="Mobile Number"><i class="fa fa-phone"></i></div>
+                </div>
+                <button class="login-btn" onclick="checkLogin()">Login</button>
+            </div>
+            <p id="err"><i class="fa fa-exclamation-circle"></i> Invalid Login Credentials!</p>
+        </div>
+    </div>
+
+    <div id="dashboard" style="display:none; width: 100%;">
+        <div class="sidebar">
+            <div class="sidebar-title" style="background: white; padding: 10px;">
+    <img src="https://i.ibb.co/zgH7M0J/logo-wide.png" alt="MGU Logo" style="width: 100%; max-width: 220px;">
+</div>
+            <button class="dropdown-btn" onclick="drop()"><i class="fa fa-id-card"></i> 1. Admission <i class="fa fa-caret-down" style="margin-left:auto;"></i></button>
+            <div id="drop-menu" class="dropdown-container">
+                <div onclick="tab('id-card-sec')">Digital ID Card</div>
+                <div onclick="tab('reg-slip-sec')">Registration Slip</div>
+            </div>
+            <a onclick="tab('exam-sec')"><i class="fa fa-file-alt"></i> 2. Examination Result</a>
+            <a onclick="tab('req-sec')"><i class="fa fa-folder-open"></i> 3. Request Services</a>
+            <a onclick="tab('upload-sec')"><i class="fa fa-cloud-upload-alt"></i> 4. Document Submission Center</a>
+            <a href="javascript:location.reload()" style="color:#ff7675; margin-top:auto;"><i class="fa fa-power-off"></i> 5. Logout</a>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <h3 id="current-tab">Dashboard</h3>
+                <div class="profile-corner">
+                    <div class="profile-info"><strong id="top-name"></strong><br><span id="top-id"></span></div>
+                    <img id="top-img" src="" alt="Student Profile" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid #d9534f; object-fit: cover;">
+                </div>
+            </div>
+
+            <div class="container">
+                <div id="welcome" class="content">
+                    <div class="card" style="text-align:center;">
+                        <h2>Welcome to Student ERP</h2>
+                        <div style="background: #fff3cd; color: #856404; padding: 15px; border: 1px solid #ffeeba; border-radius: 5px; margin: 20px 0; font-weight: bold;">
+                            <i class="fa fa-exclamation-triangle"></i> Important Notification: All concerned students are hereby informed that they must clear all outstanding dues (Tuition Fees / Library Dues / Laboratory Charges / Hostel Fees / Examination Fees, if any) within the prescribed time.
+                        </div>
+                        <p>Select a service from the sidebar.</p>
+                    </div>
+                </div>
+
+                <div id="exam-sec" class="content hidden">
+                    <div class="card">
+                        <h3 style="text-align:center; color:var(--mgu-blue);">Online Examination Result</h3>
+                        <div style="margin: 20px 0; text-align: center; background: #f9f9f9; padding: 20px; border: 1px solid #ddd; border-radius: 8px; display: flex; justify-content: center; align-items: center; gap: 15px;">
+                            <label style="font-weight:bold;">Choose Semester: </label>
+                            <select id="sem-select" style="padding: 8px; width: 200px; border-radius: 4px; border: 1px solid #ccc;">
+                                <option value="">-- Select Semester --</option>
+                                <option value="sem1">Semester 1</option>
+                                <option value="sem2">Semester 2</option>
+                                <option value="sem3">Semester 3</option>
+                                <option value="sem4">Semester 4</option>
+                            </select>
+                            <button onclick="showResult()" style="padding: 9px 25px; background: var(--mgu-blue); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;"><i class="fa fa-search"></i> Search</button>
+                        </div>
+                        <div id="result-display" class="hidden">
+                            <div class="slip-header" style="display: flex; align-items: center; justify-content: space-between;">
+    <img src="https://i.ibb.co/zgH7M0J/logo-wide.png" width="220" alt="MGU Wide Logo"><div style="text-align:center; flex:1;"><h2>MANSAROVAR GLOBAL UNIVERSITY</h2><p style="font-size:10px;">Billkisganj, Sehore, Madhya Pradesh-466001</p></div></div>
+                            <table class="slip-table">
+                                <tr><td class="label">Enrollment No</td><td id="res-enroll"></td><td class="label">Student Name</td><td id="res-name"></td></tr>
+                                <tr><td class="label">Course</td><td id="res-course"></td><td class="label">Semester</td><td id="res-sem-val"></td></tr>
+                                <tr><td class="label">Father/Husband</td><td colspan="3" id="res-father"></td></tr>
+                            </table>
+                            <table class="slip-table"><thead style="background:#f0f0f0;"><tr><th>Subject Name</th><th>Max</th><th>Obtained</th><th>Grade</th><th>Point</th></tr></thead><tbody id="marks-body"></tbody></table>
+                            <div style="background:#eee; padding:15px; border:1px solid #999; font-weight:bold; display:flex; justify-content:space-around;">
+                                <span>Total: <span id="res-total"></span></span><span>Percentage: <span id="res-per"></span></span><span>SGPA: <span id="res-sgpa"></span></span><span style="color:green;">Result: PASS</span>
+                            </div>
+                            <div style="margin-top:30px; font-size:11px; border-top: 1px dashed #333; padding-top:10px;"><p><strong>Note:</strong> Computer generated provisional result verified by University.</p><p style="text-align:right; font-weight:bold; margin-top:15px;">Controller of Examination</p></div>
+                        </div>
+                    </div>
+                </div>
+
+               <div id="id-card-sec" class="content hidden">
+    <div class="card">
+        <div class="id-wrapper">
+            <div class="header-box">
+                <img src="https://i.ibb.co/RG8fQ1rf/logo.jpg" alt="MGU Logo">
+                <div class="univ-title">Mansarovar Global<br>University</div>
+            </div>
+
+            <div class="box-upper">
+                <div class="img-placeholder">
+                    <img id="id-photo-img" src="" alt="Student Photo">
+                </div>
+                <div class="info-line">Father's Name: <span id="id-father"></span></div>
+                <div class="info-line">Enrollment No: <span id="id-enroll"></span></div>
+                <div class="info-line">Date of Birth: <span id="id-dob"></span></div>
+            </div>
+
+            <div class="box-lower">
+                <div class="info-line">Valid From: <span id="id-session"></span></div>
+                <div class="info-line">Course: <span id="id-course"></span></div>
+                <div class="info-line">Address: <span id="id-address" style="font-size: 9px;"></span></div>
+                
+                <div style="font-size: 10px; font-weight: bold; margin-top: 20px;">Auth. Signatory:</div>
+                <div style="margin-top: 10px; font-size: 9px; font-weight: bold;">
+                    MANSAROVAR GLOBAL UNIVERSITY<br>Sehore, Madhya Pradesh-466001
+                </div>
+                <div class="emergency-btn">Call in Emergency: 0755-2495580</div>
+            </div>
+        </div>
+        <p style="text-align:center; margin-top:20px;">
+            <button class="btn-action" onclick="window.print()"><i class="fa fa-print"></i> Print ID Card</button>
+        </p>
+    </div>
+</div>
+
+                <div id="reg-slip-sec" class="content hidden">
+                    <div class="card">
+                        <div class="slip-header"><img src="https://i.ibb.co/Ps37vbBF/logo.png" width="130"><div style="text-align:center; flex:1;"><h2>MANSAROVAR GLOBAL UNIVERSITY</h2><p style="font-size:10px;">Billkisganj, Sehore, Madhya Pradesh-466001</p></div></div>
+                        <h4 style="text-align:center; background:#f0f0f0; padding:10px; border:1px solid #333;">CANDIDATE REGISTRATION SLIP</h4>
+                        <table class="slip-table">
+                            <tr><td class="label">Registration No</td><td id="reg-num"></td><td class="label">Date</td><td id="reg-date"></td></tr>
+                            <tr><td class="label">Candidate Name</td><td colspan="3" id="reg-name"></td></tr>
+                            <tr><td class="label">Course / Stream</td><td id="reg-course"></td><td class="label">Aadhar No</td><td id="reg-aadhar"></td></tr>
+                            <tr><td class="label">Father's Name</td><td id="reg-father"></td><td class="label">Mother's Name</td><td id="reg-mother"></td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="req-sec" class="content hidden">
+                    <div class="card">
+                        <h3>Request Documents</h3>
+                        <div class="upload-grid" style="grid-template-columns: 1fr; gap: 10px;">
+                            <label><input type="checkbox"> Transfer Certificate (TC)</label>
+                            <label><input type="checkbox"> Migration Certificate</label>
+                            <label><input type="checkbox"> Provisional Degree</label>
+                            <label><input type="checkbox"> Character Certificate</label>
+                        </div>
+                        <button class="btn-action" onclick="alert('Your request has been sent to University.')">Submit Request</button>
+                    </div>
+                </div>
+
+                <div id="upload-sec" class="content hidden">
+                    <div class="card">
+                        <div class="status-box">
+                            <i class="fa fa-check-circle" style="font-size:50px; margin-bottom:15px;"></i>
+                            <h2>Documents Verified</h2>
+                            <p>All mandatory documents have been received and verified by the University.</p>
+                        </div>
+                        <table class="slip-table" style="margin-top:20px;">
+                            <tr style="background:#f9f9f9;"><td>Aadhar Card</td><td style="color:green; font-weight:bold;">Verified <i class="fa fa-check"></i></td></tr>
+                            <tr><td>10th Marksheet</td><td style="color:green; font-weight:bold;">Verified <i class="fa fa-check"></i></td></tr>
+                            <tr style="background:#f9f9f9;"><td>12th Marksheet</td><td style="color:green; font-weight:bold;">Verified <i class="fa fa-check"></i></td></tr>
+                            <tr><td>Graduation Marksheet</td><td style="color:green; font-weight:bold;">Verified <i class="fa fa-check"></i></td></tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        const students = {
+            "2021MGU1089": {
+                pass: "21Anita@79", mob: "8617079927", name: "ANITA VERMA", father: "JAYPRAKASH", mother: "CHANDRA JYOTI", dob: "30 Jan 1979", course: "MA (English)", aadhar: "523407372716", regNo: "23378", regDate: "30 Oct 2021", img: "https://i.ibb.co/RGZmWGGq/student-photo.png",,Address: "SEARSOL GANESH DHAM FLAT NO -C/2/.4, RANIGANJ, BARDDHAMAN Pin Code: 713358",
+                results:  {
+                    'sem1': { title: 'Semester 1', total: '359/400', per: '89.75%', sgpa: '8.4', marks: [['History of Literature I', 80, 71, 'A', 8],['English Poetry I', 80, 69, 'A', 8],['English Drama I', 80, 73, 'A+', 9],['Prose & Fiction I', 80, 70, 'A', 8],['Research Methodology', 80, 76, 'A+', 9]] },
+                    'sem2': { title: 'Semester 2', total: '354/400', per: '88.5%', sgpa: '8.2', marks: [['History of Literature II', 80, 73, 'A+', 9],['English Poetry II', 80, 68, 'A', 8],['English Drama II', 80, 73, 'A+', 9],['English Novel I', 80, 70, 'A+', 8],['Literary Criticism I', 80, 70, 'A', 8]] },
+                    'sem3': { title: 'Semester 3', total: '290/400', per: '72.5%', sgpa: '7.2', marks: [['English Novel II', 80, 58, 'B+', 7],['Literary Criticism II', 80, 60, 'A', 8],['American Literature', 80, 56, 'B+', 7],['Indian Writing in English', 80, 59, 'B+', 7],['Linguistics & Phonetics', 80, 57, 'B+', 7]] },
+                    'sem4': { title: 'Semester 4', total: '295/400', per: '73.75%', sgpa: '7.4', marks: [['Post-Colonial Literature', 80, 60, 'A', 8],['World Literature', 80, 58, 'B+', 7],['Modern Literary Theory', 80, 56, 'B+', 7],['Elective', 80, 59, 'B+', 7],['Dissertation / Project', 80, 62, 'A', 8]] }
+                }
+            },
+            "MGU25764308": {
+                pass: "Somnath@4308", mob: "6201457276", name: "SOMNATH SAH", father: "Shri JAGANNATH SAH", mother: "Smt. AMERIKA DEVI", dob: "12/02/1996", course: "DIPLOMA IN ELECTRICAL ( 2 YEARS ) ", aadhar: "772632155868", regNo: "24389", regDate: "14 Aug 2025", img: "https://i.ibb.co/ynqnDpbQ/Screenshot-2026-02-21-150417.png.",,Address: "Ward 05, Deodha,  Samastipur, Bihar Pin Code: 848308",
+                results: {
+                    'sem1': { title: 'Semester 1', total: '321/450', per: '71.33%', sgpa: '7.1', marks: [['Communication Skills', 70, 50, 'A+', 8],['Engineering Mathematics - 1', 70, 48, 'A', 7],['Applied Physics', 70, 58, 'A', 7] , ['Applied Chemistry', 70, 53, 'A', 7] , ['Engineering Mechanics', 70, 48, 'A', 5] ,['Applied Physics', 30, 22, 'A', 2] ,['Applied Chemistry', 30, 18, 'A', 2] ,['Engineering Mechanics', 20, 24, 'A', 2]] }
+                }
+            }
+        };
+
+        function checkLogin() {
+            const u = document.getElementById('log-uid').value;
+            const p = document.getElementById('log-pass').value;
+            const m = document.getElementById('log-mob').value;
+            
+            if(students[u] && students[u].pass === p && students[u].mob === m) {
+                currentUser = students[u];
+                currentUser.id = u;
+                loadDashboard();
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'flex';
+            } else { 
+                document.getElementById('err').style.display = 'block'; 
+            }
+        }
+
+        function loadDashboard() {
+            document.getElementById('top-name').innerText = currentUser.name;
+            document.getElementById('top-id').innerText = "ID: " + currentUser.id;
+            document.getElementById('top-img').src = currentUser.img;
+            
+            // Registration Slip
+            document.getElementById('reg-num').innerText = currentUser.regNo;
+            document.getElementById('reg-date').innerText = currentUser.regDate;
+            document.getElementById('reg-name').innerText = currentUser.name;
+            document.getElementById('reg-course').innerText = currentUser.course;
+            document.getElementById('reg-aadhar').innerText = currentUser.aadhar;
+            document.getElementById('reg-father').innerText = currentUser.father;
+            document.getElementById('reg-mother').innerText = currentUser.mother;
+
+            // ID Card
+            document.getElementById('id-photo-img').src = currentUser.img;
+    document.getElementById('id-name').innerText = currentUser.name;
+    document.getElementById('id-enroll').innerText = currentUser.id;
+    document.getElementById('id-father').innerText = currentUser.father;
+    document.getElementById('id-dob').innerText = currentUser.dob;
+    document.getElementById('id-course').innerText = currentUser.course;
+        }
+
+        function drop() { var d = document.getElementById("drop-menu"); d.style.display = (d.style.display === "block") ? "none" : "block"; }
+        
+        function tab(id) {
+            document.querySelectorAll('.content').forEach(c => c.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function showResult() {
+            const sem = document.getElementById('sem-select').value;
+            const display = document.getElementById('result-display');
+            if(!sem) { alert("Please Select Semester"); return; }
+            
+            const s = currentUser.results[sem];
+            if(!s) { alert("Result not updated for this semester."); return; }
+
+            display.classList.remove('hidden');
+            document.getElementById('res-enroll').innerText = currentUser.id;
+            document.getElementById('res-name').innerText = currentUser.name;
+            document.getElementById('res-course').innerText = currentUser.course;
+            document.getElementById('res-father').innerText = currentUser.father;
+            document.getElementById('res-sem-val').innerText = s.title;
+            document.getElementById('res-total').innerText = s.total;
+            document.getElementById('res-per').innerText = s.per;
+            document.getElementById('res-sgpa').innerText = s.sgpa;
+
+            let h = ''; 
+            s.marks.forEach(m => { 
+                h += `<tr><td>${m[0]}</td><td>${m[1]}</td><td>${m[2]}</td><td>${m[3]}</td><td>${m[4]}</td></tr>`; 
+            });
+            document.getElementById('marks-body').innerHTML = h;
+        }
+    </script>
+</body>
+</html>
